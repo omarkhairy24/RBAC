@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const organizationSchema = new mongoose.Schema({
     name: { type: String, required: true },
-    email: { type: String, unique: true, required: true, index: true },
+    email: { type: String, required: true, index: true },
     password: { type: String, required: true },
     tier: { 
         type: String, 
@@ -12,7 +12,9 @@ const organizationSchema = new mongoose.Schema({
     isVerified:{
         type: Boolean,
         default: false
-    }
+    },
+    resetToken: String,
+    resetTokenExpires: Date
 },{timestamps: true});
 
 const Organization = mongoose.model('Organization', organizationSchema);

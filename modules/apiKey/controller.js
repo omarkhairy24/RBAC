@@ -1,7 +1,7 @@
 const { AppError } = require("../../common/services/appError");
 const TIER_LIMITS = require("../tiers/schema");
 const ApiKey = require("./schema");
-const { generateApiKey } = require("./service");
+const { generateApiKey, resetMontlyJob } = require("./service");
 
 const index = {
     getAll: async(req,res,next) =>{
@@ -32,18 +32,19 @@ const index = {
             next(error);
         }
     },
-    addKey: async(req,res,next) =>{
+    generateKey: async(req,res,next) => {
         try {
-            
+            console.log(req.organization)
             const orgTier = TIER_LIMITS[req.organization.tier];
 
             const apiKeys = await ApiKey.find({ organization: req.organization.id }).select('_id');
-            if(apiKeys.length >= orgTier.maxApiKeys) throw AppError(`Maximum API keys for ${req.organization.tier} tier reached`,400);
+            if(apiKeys.length === orgTier.maxApiKeys) throw AppError(`Maximum API keys for ${req.organization.tier} tier reached`,400);
 
             const key = await ApiKey.create({
-                organization: organization._id,
+                organization: req.organization.id,
                 key: generateApiKey(),
             });
+            await resetMontlyJob(key);
 
             res.status(201).json({
                 message:'key created successfully',
@@ -68,4 +69,6 @@ const index = {
             next(error)
         }
     }
-}
+};
+
+module.exports = index

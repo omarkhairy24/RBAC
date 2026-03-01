@@ -18,7 +18,8 @@ const apiKeySchema = new mongoose.Schema({
     monthlyReset: {
         type: Date, 
         default: Date.now 
-    }
+    },
+    resetJobId: String
 }, 
 { 
     timestamps: true 

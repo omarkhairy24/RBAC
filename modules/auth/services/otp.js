@@ -20,4 +20,4 @@ exports.sendOTPVerificationCode = async( organization ) => {
     } catch (error) {
         throw AppError(error, 400)
     }
-}
+};
