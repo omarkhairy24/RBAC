@@ -1,4 +1,4 @@
-const { agenda } = require("../../config/agenda.jobs");
+const agenda = require("../../config/agenda.jobs");
 const ApiKey = require("./schema");
 
 agenda.define('reset-monthly', async (job) => {
