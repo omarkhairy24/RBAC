@@ -64,7 +64,10 @@ const index = {
             
             const { id } = req.params;
 
-            const user = await User.findById(id);
+            const user = await User.findById(id).populate({
+                path:'roles',
+                populate: 'permissions'
+            });
             if(!user) throw AppError('user not found', 404);
             
             res.status(200).json(user);
