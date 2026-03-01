@@ -13,10 +13,10 @@ const index = {
                     $match:{
                         organization: new mongoose.Types.ObjectId(req.organization.id),
                         ...( search ? {
-                            $or:{
-                                name: { $regex: search, $options: 'i' },
-                                email: { $regex: search, $options: 'i' }
-                            }
+                            $or:[
+                                { name: { $regex: search, $options: 'i' } },
+                                { email: { $regex: search, $options: 'i' } }
+                            ]
                         } : {} )
                     }
                 },
